@@ -178,14 +178,15 @@ fun AddProductScreen(
             OutlinedTextField(
                 value = productPrice,
                 onValueChange = {
-                    productPrice = if (it.isEmpty()) {
-                        it
+                    val temp = if (it.isEmpty()) {
+                        it.trim()
                     } else {
                         when (it.toDoubleOrNull()) {
                             null -> productPrice
-                            else -> it
+                            else -> it.trim()
                         }
                     }
+                    productPrice = ("%.2f").format(temp.toDoubleOrNull() ?: 0.0)
                 },
                 label = {
                     Text(text = "Product Price")
@@ -196,14 +197,15 @@ fun AddProductScreen(
             OutlinedTextField(
                 value = productFinalPrice,
                 onValueChange = {
-                    productFinalPrice = if (it.isEmpty()) {
-                        it
+                    val temp = if (it.isEmpty()) {
+                        it.trim()
                     } else {
                         when (it.toDoubleOrNull()) {
                             null -> productFinalPrice
-                            else -> it
+                            else -> it.trim()
                         }
                     }
+                    productFinalPrice = ("%.2f").format(temp.toDoubleOrNull() ?: 0.0)
                 },
                 label = {
                     Text(text = "Product Final Price")
@@ -225,14 +227,15 @@ fun AddProductScreen(
             OutlinedTextField(
                 value = availableUnits,
                 onValueChange = {
-                    availableUnits = if (it.isEmpty()) {
-                        it
+                    val temp = if (it.isEmpty()) {
+                        it.trim()
                     } else {
                         when (it.toIntOrNull()) {
                             null -> availableUnits
-                            else -> it
+                            else -> it.trim()
                         }
                     }
+                    availableUnits = (temp.toIntOrNull() ?: 0).toString()
                 },
                 label = {
                     Text(text = "Product Available Units")
