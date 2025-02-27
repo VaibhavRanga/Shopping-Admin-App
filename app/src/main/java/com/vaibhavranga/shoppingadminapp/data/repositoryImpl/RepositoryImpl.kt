@@ -6,6 +6,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.vaibhavranga.shoppingadminapp.common.CATEGORY_PATH
 import com.vaibhavranga.shoppingadminapp.common.PRODUCT_PATH
 import com.vaibhavranga.shoppingadminapp.common.ResultState
+import com.vaibhavranga.shoppingadminapp.data.pushNotifications.PushNotifications
 import com.vaibhavranga.shoppingadminapp.domain.models.CategoryModel
 import com.vaibhavranga.shoppingadminapp.domain.models.ProductModel
 import com.vaibhavranga.shoppingadminapp.domain.repository.Repository
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
-    private val storage: FirebaseStorage
+    private val storage: FirebaseStorage,
+    private val pushNotifications: PushNotifications
 ) : Repository {
     override suspend fun addCategory(category: CategoryModel): Flow<ResultState<String>> =
         callbackFlow {
@@ -94,6 +96,10 @@ class RepositoryImpl @Inject constructor(
             firestore.collection(PRODUCT_PATH).add(product)
                 .addOnSuccessListener {
                     trySend(ResultState.Success(data = "Product added successfully"))
+                    pushNotifications.sendNotificationToAllUsers(
+                        productName = product.name,
+                        imageUrl = product.imageUrl
+                    )
                 }
                 .addOnFailureListener {
                     trySend(ResultState.Error(error = it.message.toString()))

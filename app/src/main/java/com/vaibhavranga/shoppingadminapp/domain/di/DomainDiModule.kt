@@ -2,6 +2,7 @@ package com.vaibhavranga.shoppingadminapp.domain.di
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.vaibhavranga.shoppingadminapp.data.pushNotifications.PushNotifications
 import com.vaibhavranga.shoppingadminapp.data.repositoryImpl.RepositoryImpl
 import com.vaibhavranga.shoppingadminapp.domain.repository.Repository
 import dagger.Module
@@ -17,9 +18,11 @@ object DomainDiModule {
     @Singleton
     fun provideRepository(
         firestore: FirebaseFirestore,
-        storage: FirebaseStorage
+        storage: FirebaseStorage,
+        pushNotifications: PushNotifications
     ): Repository = RepositoryImpl(
         firestore = firestore,
-        storage = storage
+        storage = storage,
+        pushNotifications = pushNotifications
     )
 }
